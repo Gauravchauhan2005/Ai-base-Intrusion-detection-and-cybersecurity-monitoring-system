@@ -1,0 +1,113 @@
+{
+  "model_version": "v1.0.0",
+  "training_date": "2026-09-23 18:38:11",
+  "total_samples": 12000,
+  "test_samples": 2400,
+  "classes": [
+    "Benign",
+    "Botnet",
+    "DDoS-LOIC-HTTP",
+    "DoS-Hulk",
+    "Infiltration",
+    "SSH-Bruteforce"
+  ],
+  "classification_report": {
+    "Benign": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 1680.0
+    },
+    "Botnet": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 120.0
+    },
+    "DDoS-LOIC-HTTP": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 192.0
+    },
+    "DoS-Hulk": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 192.0
+    },
+    "Infiltration": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 96.0
+    },
+    "SSH-Bruteforce": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 120.0
+    },
+    "accuracy": 1.0,
+    "macro avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 2400.0
+    },
+    "weighted avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 2400.0
+    }
+  },
+  "false_positive_rate": 0.0,
+  "accuracy": 1.0,
+  "macro_f1": 1.0,
+  "weighted_f1": 1.0,
+  "avg_inference_latency_ms": 11.063056400027563,
+  "p95_inference_latency_ms": 14.944530000002487,
+  "top_features": [
+    [
+      "flow_duration",
+      0.16234725713729858
+    ],
+    [
+      "pkt_len_mean",
+      0.16092853248119354
+    ],
+    [
+      "rst_flag_cnt",
+      0.0815371498465538
+    ],
+    [
+      "bwd_pkt_len_max",
+      0.07979501038789749
+    ],
+    [
+      "ack_flag_cnt",
+      0.07006464153528214
+    ],
+    [
+      "bwd_pkt_len_mean",
+      0.06454386562108994
+    ],
+    [
+      "bwd_pkts_s",
+      0.05532947927713394
+    ],
+    [
+      "tot_bwd_pkts",
+      0.04857362434267998
+    ],
+    [
+      "fwd_pkt_len_max",
+      0.040238916873931885
+    ],
+    [
+      "down_up_ratio",
+      0.038907404989004135
+    ]
+  ]
+}
