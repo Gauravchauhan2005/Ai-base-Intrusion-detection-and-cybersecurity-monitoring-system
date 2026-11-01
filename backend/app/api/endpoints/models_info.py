@@ -9,7 +9,10 @@ logger = logging.getLogger("models_api")
 router = APIRouter(prefix="/models", tags=["Machine Learning"])
 
 def _load_metrics() -> Dict[str, Any]:
-    metrics_path = os.path.join(settings.BASE_DIR, "ml", "models", "metrics.json")
+    base = getattr(settings, "BASE_DIR", os.getcwd())
+    metrics_path = os.path.join(base, "ml", "models", "metrics.json")
+    if not os.path.exists(metrics_path):
+        metrics_path = os.path.join(getattr(settings, "MODEL_DIR", "ml/models"), "metrics.json")
     if not os.path.exists(metrics_path):
         # Fallback to local ml dir
         metrics_path = os.path.join(os.getcwd(), "ml", "models", "metrics.json")

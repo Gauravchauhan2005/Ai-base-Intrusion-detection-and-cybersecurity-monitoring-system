@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "AI-Based Intrusion Detection & Cybersecurity Monitoring System"
     VERSION: str = "1.0.0"
     API_PREFIX: str = "/api"
+    BASE_DIR: str = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
     
     # Database
     DATABASE_URL: str = "sqlite:///./ids_local.db"
