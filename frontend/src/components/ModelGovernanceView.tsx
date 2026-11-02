@@ -200,30 +200,39 @@ export const ModelGovernanceView: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-850">
-                {Object.entries(meta.classification_report || {}).map(([cName, row]: [string, any]) => {
-                  const isBenign = cName === "Benign";
-                  return (
-                    <tr key={cName} className="hover:bg-zinc-900/40 transition">
-                      <td className="py-2 px-2.5 font-bold text-zinc-200">
-                        {cName}
-                      </td>
-                      <td className="py-2 px-2.5 text-emerald-400 font-semibold">
-                        {(row.precision * 100).toFixed(1)}%
-                      </td>
-                      <td className="py-2 px-2.5 text-emerald-400 font-semibold">
-                        {(row.recall * 100).toFixed(1)}%
-                      </td>
-                      <td className="py-2 px-2.5">
-                        <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-cyan-950 text-cyan-300 border border-cyan-800">
-                          {row["f1-score"].toFixed(2)}
-                        </span>
-                      </td>
-                      <td className="py-2 px-2.5 text-right text-zinc-400">
-                        {row.support.toLocaleString()}
-                      </td>
-                    </tr>
-                  );
-                })}
+                {Object.entries(meta.classification_report || {})
+                  .filter(([cName, row]: [string, any]) => typeof row === "object" && row !== null && cName !== "accuracy")
+                  .map(([cName, row]: [string, any]) => {
+                    const isAggregate = cName.includes("avg");
+                    const precision = typeof row?.precision === "number" ? `${(row.precision * 100).toFixed(1)}%` : "—";
+                    const recall = typeof row?.recall === "number" ? `${(row.recall * 100).toFixed(1)}%` : "—";
+                    const f1 = typeof row?.["f1-score"] === "number" 
+                      ? row["f1-score"].toFixed(2) 
+                      : (typeof row?.f1 === "number" ? row.f1.toFixed(2) : "—");
+                    const support = typeof row?.support === "number" ? row.support.toLocaleString() : "—";
+
+                    return (
+                      <tr key={cName} className={isAggregate ? "bg-zinc-900/50 font-medium" : "hover:bg-zinc-900/40 transition"}>
+                        <td className={`py-2 px-2.5 font-bold ${isAggregate ? "text-cyan-400" : "text-zinc-200"}`}>
+                          {cName}
+                        </td>
+                        <td className="py-2 px-2.5 text-emerald-400 font-semibold">
+                          {precision}
+                        </td>
+                        <td className="py-2 px-2.5 text-emerald-400 font-semibold">
+                          {recall}
+                        </td>
+                        <td className="py-2 px-2.5">
+                          <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-cyan-950 text-cyan-300 border border-cyan-800">
+                            {f1}
+                          </span>
+                        </td>
+                        <td className="py-2 px-2.5 text-right text-zinc-400">
+                          {support}
+                        </td>
+                      </tr>
+                    );
+                  })}
               </tbody>
             </table>
           </div>
@@ -247,19 +256,20 @@ export const ModelGovernanceView: React.FC = () => {
           </div>
 
           <div className="mt-4 space-y-2.5">
-            {meta.top_features.map(([fName, weight]: [string, number], i: number) => {
-              const pct = Math.round(weight * 100);
+            {(meta.top_features || []).map(([fName, weight]: [string, number], i: number) => {
+              const numWeight = typeof weight === "number" ? weight : 0;
+              const pct = Math.round(numWeight * 100);
               return (
-                <div key={fName} className="flex items-center gap-3 text-xs">
+                <div key={fName || i} className="flex items-center gap-3 text-xs">
                   <span className="w-32 text-zinc-300 font-semibold truncate text-[11px]">{fName}</span>
                   <div className="flex-1 bg-zinc-900 rounded-full h-2 overflow-hidden border border-zinc-800">
                     <div
                       className="bg-gradient-to-r from-cyan-500 to-blue-500 h-2 rounded-full"
-                      style={{ width: `${Math.max(8, pct * 4.5)}%` }}
+                      style={{ width: `${Math.max(8, Math.min(100, pct * 4.5))}%` }}
                     ></div>
                   </div>
                   <span className="w-16 text-right text-cyan-400 font-bold text-[11px]">
-                    {(weight * 100).toFixed(1)}%
+                    {(numWeight * 100).toFixed(1)}%
                   </span>
                 </div>
               );
